@@ -1,0 +1,1 @@
+docker run --name teamcity-server-instance -v C:/Users/belz/workspace/docker/teamCity/data/teamcity_server/datadir -v C:/Users/belz/workspace/docker/opt/teamcity/logs -p 8111:8111 jetbrains/teamcity-server
