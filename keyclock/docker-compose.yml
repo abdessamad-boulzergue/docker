@@ -1,0 +1,51 @@
+version: '3.3'
+
+services:
+  keycloak:
+    build: .
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres_container_KC:5432/postgres
+      KC_DB_USERNAME: user
+      KC_DB_PASSWORD: root
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: secured
+      KC_HOSTNAME_STRICT: 'false'
+      KC_HOSTNAME_STRICT_HTTPS: 'false'
+      KC_METRICS_ENABLED: 'true'
+      KC_FEATURES: token-exchange
+      KC_HTTP_ENABLED: 'true'
+      PROXY_ADDRESS_FORWARDING: 'true'
+      KC_HOSTNAME_STRICT_BACKCHANNEL: 'false'
+    command:
+      - "start"
+      - "--proxy=passthrough"
+    container_name: keycloak
+    ports:
+      - 8280:8080
+      - 8443:8443
+    networks:
+      - postgres_KC
+
+  postgres:
+    container_name: postgres_container_KC
+    image: postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_DATABASE: postgres
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres_KC
+    restart: unless-stopped
+    
+volumes:
+    postgres:
+networks:
+  postgres_KC:
+  
