@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+  nginx:
+    build: src/nginx
+    environment:
+      ENVIRONMENT_NAME: Development
+    ports:
+      - "80:80"
+    networks:
+      - keyclock_postgres_KC
+      
+networks:
+  keyclock_postgres_KC:
+    external: true
