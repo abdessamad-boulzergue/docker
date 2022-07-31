@@ -1,0 +1,19 @@
+version: '3.1'
+ 
+services:
+ 
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql
+    ports:
+     - "1433:1433"
+    environment:
+    - SA_PASSWORD=Sef@s123
+    - ACCEPT_EULA=Y
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        /opt/mssql/bin/sqlservr &
+        /opt/mssql-tools/bin/sqlcmd -l 50  -S localhost -U sa -P Sef@s123 -d master -Q "CREATE DATABASE sefas;"
+        while :; do sleep 10; done
